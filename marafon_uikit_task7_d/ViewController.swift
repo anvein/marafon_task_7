@@ -3,6 +3,8 @@ import UIKit
 
 class ViewController: UIViewController, UIScrollViewDelegate {
 
+    let imageHeight: CGFloat = 270
+    
     lazy var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +31,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         return scroll
     }()
     
-    lazy var imageHeightConstraint = imageView.heightAnchor.constraint(equalToConstant: 240)
+    lazy var imageHeightConstraint = imageView.heightAnchor.constraint(equalToConstant: imageHeight)
     
     lazy var imageTopConstraint = imageView.topAnchor.constraint(equalTo: containerView.topAnchor)
     lazy var imageBottomConstraint = imageView.bottomAnchor.constraint(equalTo: scrollView.topAnchor)
@@ -70,7 +72,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
         containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 3000).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 2000).isActive = true
         
         imageTopConstraint.isActive = true
         imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
@@ -84,18 +86,17 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         let offset = scrollView.contentOffset.y
         let defaultTop = CGFloat(0)
         var currentTop = defaultTop
-        let barHeight = navigationController?.navigationBar.frame.height ?? 0
+        let barHeight = navigationController?.navigationBar.frame.height ?? view.safeAreaInsets.top
         
         if offset < 0 {
             currentTop = offset
-            imageHeightConstraint.constant = 240 - offset
-            scrollView.verticalScrollIndicatorInsets.top = 240 - offset - barHeight
+            imageHeightConstraint.constant = imageHeight - offset
+            scrollView.verticalScrollIndicatorInsets.top = imageHeight - offset - barHeight
         } else {
-            imageHeightConstraint.constant = 240
-            scrollView.verticalScrollIndicatorInsets.top = 240 - barHeight
+            imageHeightConstraint.constant = imageHeight
+            scrollView.verticalScrollIndicatorInsets.top = imageHeight - barHeight
         }
         imageTopConstraint.constant = currentTop
-        
     }
 
 }
